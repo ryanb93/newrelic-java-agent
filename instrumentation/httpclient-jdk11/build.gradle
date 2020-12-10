@@ -1,0 +1,28 @@
+apply plugin: 'java'
+
+dependencies {
+    implementation(project(":agent-bridge"))
+}
+
+jar {
+    manifest {
+        attributes('Automatic-Module-Name': 'httpclient.jdk11')
+        attributes 'Implementation-Title': 'com.newrelic.instrumentation.httpclient-jdk11' }
+}
+
+java{
+//    modularity.inferModulePath = true
+}
+
+compileJava{
+    options.fork = true
+    options.forkOptions.executable = jdk11 + '/bin/javac'
+    options.forkOptions.javaHome = new File(jdk11)
+    options.bootstrapClasspath = null
+//    sourceCompatibility = JavaVersion.VERSION_11
+//    targetCompatibility = JavaVersion.VERSION_11
+}
+
+
+
+

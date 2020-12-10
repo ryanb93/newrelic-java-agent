@@ -9,7 +9,7 @@ package com.newrelic.agent.config;
 
 import java.util.Map;
 
-public class DistributedTracingConfig extends BaseConfig {
+public class  DistributedTracingConfig extends BaseConfig {
 
     private static final boolean DEFAULT_DISTRIBUTED_TRACING = false;
     private static final String SYSTEM_PROPERTY_ROOT = "newrelic.config.distributed_tracing.";
