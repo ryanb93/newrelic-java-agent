@@ -35,6 +35,7 @@ class AkkaHttpCoreTest {
 
   val akkaServer = new AkkaServer()
   val playServer = new PlayServer()
+  val akkaFlowServer = new AkkaFlowServer()
   var port: Int = InstrumentationTestRunner.getIntrospector.getRandomPort
   val baseUrl: String = "http://localhost:" + port
 
@@ -60,6 +61,20 @@ class AkkaHttpCoreTest {
     val introspector: Introspector = InstrumentationTestRunner.getIntrospector
     awaitFinishedTx(introspector, 1)
     akkaServer.stop()
+    Assert.assertEquals(1, introspector.getFinishedTransactionCount())
+    val txName = introspector.getTransactionNames.iterator.next
+    Assert.assertEquals("WebTransaction/AkkaHttpCore/akkaHandler", txName)
+  }
+
+
+  @Test
+  def asyncHandlerAkkaFlowServerTest(): Unit = {
+    akkaFlowServer.start(port)
+    Http().singleRequest(HttpRequest(uri = baseUrl + "/asyncPing"))
+
+    val introspector: Introspector = InstrumentationTestRunner.getIntrospector
+    awaitFinishedTx(introspector, 1)
+    akkaFlowServer.stop()
     Assert.assertEquals(1, introspector.getFinishedTransactionCount())
     val txName = introspector.getTransactionNames.iterator.next
     Assert.assertEquals("WebTransaction/AkkaHttpCore/akkaHandler", txName)
